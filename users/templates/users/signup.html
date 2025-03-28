@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="signup-form">
+    <h2>Patient Registration</h2>
+    <form method="post">
+        {% csrf_token %}
+        {% for field in form %}
+            <div class="form-group">
+                {{ field.label_tag }}
+                {{ field }}
+                {% if field.errors %}
+                    <div class="error">{{ field.errors }}</div>
+                {% endif %}
+            </div>
+        {% endfor %}
+        <button type="submit">Register</button>
+    </form>
+    <p>Already have an account? <a href="{% url 'login' %}">Login</a></p>
+</div>
+{% endblock %}

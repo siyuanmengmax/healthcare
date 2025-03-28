@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="ehr-upload-form">
+    <h2>Upload Medical Record</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {% for field in form %}
+            <div class="form-group">
+                {{ field.label_tag }}
+                {{ field }}
+                {% if field.errors %}
+                    <div class="error">{{ field.errors }}</div>
+                {% endif %}
+            </div>
+        {% endfor %}
+        <button type="submit">Upload</button>
+    </form>
+    <a href="{% url 'ehr_list' %}">View All My Records</a>
+</div>
+{% endblock %}

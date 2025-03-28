@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="profile-container">
+    <h2>Personal Profile</h2>
+    <div class="profile-details">
+        <p><strong>Name:</strong> {{ patient.name }}</p>
+        {% if patient.date_of_birth %}
+            <p><strong>Date of Birth:</strong> {{ patient.date_of_birth }}</p>
+        {% endif %}
+        {% if patient.address %}
+            <p><strong>Address:</strong> {{ patient.address }}</p>
+        {% endif %}
+        {% if patient.phone %}
+            <p><strong>Phone:</strong> {{ patient.phone }}</p>
+        {% endif %}
+        {% if patient.emergency_contact %}
+            <p><strong>Emergency Contact:</strong> {{ patient.emergency_contact }}</p>
+        {% endif %}
+    </div>
+    <a href="{% url 'profile_update' %}" class="btn">Edit Profile</a>
+    <a href="{% url 'ehr_upload' %}" class="btn">Upload Medical Records</a>
+</div>
+{% endblock %}
