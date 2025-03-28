@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="ehr-list-container">
+    <h2>My Medical Records</h2>
+    {% if records %}
+        <table class="records-table" style="width: 100%; border-collapse: collapse;">
+            <thead>
+                <tr style="background-color: #f2f2f2;">
+                    <th style="padding: 12px; text-align: left; border-bottom: 1px solid #ddd;">Type</th>
+                    <th style="padding: 12px; text-align: left; border-bottom: 1px solid #ddd;">Description</th>
+                    <th style="padding: 12px; text-align: left; border-bottom: 1px solid #ddd;">Creation Date</th>
+                    <th style="padding: 12px; text-align: left; border-bottom: 1px solid #ddd;">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for record in records %}
+                <tr>
+                    <td style="padding: 12px; text-align: left; border-bottom: 1px solid #ddd;">{{ record.get_record_type_display }}</td>
+                    <td style="padding: 12px; text-align: left; border-bottom: 1px solid #ddd;">{{ record.description }}</td>
+                    <td style="padding: 12px; text-align: left; border-bottom: 1px solid #ddd;">{{ record.creation_date|date:"Y-m-d" }}</td>
+                    <td style="padding: 12px; text-align: left; border-bottom: 1px solid #ddd;">
+                        <a href="{{ record.attachments.url }}" target="_blank">View File</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>You haven't uploaded any medical records yet.</p>
+    {% endif %}
+    <a href="{% url 'ehr_upload' %}" class="btn">Upload New Record</a>
+</div>
+{% endblock %}
