@@ -12,40 +12,92 @@ The Healthcare Management System is a comprehensive digital platform aimed at mo
 ### Target Audience
 Our intended audience includes healthcare facilities of various sizes, from individual practices to clinics and hospitals, as well as their patients who will benefit from improved access to their healthcare information and more efficient communication with their providers.
 
-## Key Features
+## Implemented Features (Midpoint Milestone)
+We have successfully implemented the following core features:
 
-- **User Authentication and Role Management**: Secure login for doctors, patients, and staff with role-based access control to ensure appropriate data access permissions.
+- **Patient Registration**: Secure signup process for patients with comprehensive profile creation
+- **Patient Authentication**: Secure login system with session management
+- **Patient Profile Management**: Interface for patients to view and update their personal information
+- **Electronic Health Records (EHR) Upload**: Functionality for patients to upload and manage their medical records
 
-- **Electronic Health Records (EHR)**: Digital platform where patients can upload medical history, lab reports, and prescriptions; doctors can update consultation notes and treatment plans.
-
-- **AI-Powered Medical Data Analysis**: Integration of LLMs to automatically extract, categorize, and analyze information from medical documents; intelligent query system for natural language searches; and clinical decision support based on comprehensive patient data analysis.
-
-- **Secure Messaging and Notifications**: HIPAA-compliant communication channel between doctors and patients; automated appointment and medication reminders to improve adherence.
-
-- **Search and Filtering**: Efficient retrieval system with natural language query capabilities for patient history, medications, and diagnoses to support clinical decision-making and improve healthcare delivery.
-
-- **Data Security and Compliance**: Implementation of robust encryption and HIPAA-compliant security protocols to protect sensitive patient information.
+## Upcoming Features
+- **Doctor Registration and Authentication**
+- **AI-Powered Medical Data Analysis**
+- **Secure Messaging between Doctors and Patients**
+- **Advanced Search and Filtering**
+- **Appointment Management**
+- **Medication Tracking and Reminders**
 
 ## Technology Stack
-
 ### Backend
-- **Django**: For robust security features, ORM capabilities, and built-in admin interface
-- **Python ML Libraries**: TensorFlow/PyTorch for implementing machine learning models
-- **Hugging Face Transformers**: For implementing and fine-tuning LLMs specialized for medical text analysis
+- **Django (5.1.7)**: For robust security features, ORM capabilities, and built-in admin interface
+- **Python**: Core programming language for backend development
 
 ### Frontend
-- **Django**: For building a responsive and interactive user interface
+- **Django Templates**: For building responsive user interfaces
+- **HTML/CSS**: For structure and styling of the application
 
 ### Database
-- **SQLite**: A reliable and secure relational database management system
+- **SQLite**: A reliable and secure relational database management system for development
 
 ### Security
-- **JWT**: For secure authentication and session management
-- **HTTPS**: For encrypted data transmission
-- **bcrypt**: For secure password hashing
+- **Django Authentication System**: For secure user authentication and authorization
+- **CSRF Protection**: Built-in protection against Cross-Site Request Forgery
+- **Password Hashing**: Secure storage of user credentials
+
+## Getting Started
+
+### Prerequisites
+- Python 3.8+
+- Django 5.1.7+
+- Virtual environment (recommended)
+
+### Installation
+1. Clone the repository
+   ```bash
+   git clone https://github.com/siyuanmengmax/healthcare.git
+   cd healthcare
+   ```
+
+2. Create and activate a virtual environment
+   ```bash
+   python -m venv env
+   source env/bin/activate  # On Windows: env\Scripts\activate
+   ```
+
+3. Install dependencies
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+4. Apply migrations
+   ```bash
+   python manage.py migrate
+   ```
+
+5. Create a superuser (admin)
+   ```bash
+   python manage.py createsuperuser
+   ```
+
+6. Run the development server
+   ```bash
+   python manage.py runserver
+   ```
+
+7. Access the application at http://127.0.0.1:8000/
+
+## Project Structure
+- `healthcare_management/` - Main project directory
+- `users/` - User authentication and profile management app
+- `ehr/` - Electronic Health Records management app
+- `templates/` - HTML templates
+- `static/` - Static files (CSS, JavaScript, images)
+- `media/` - User-uploaded files
 
 ## Project Status
-This project is currently in development by Team20_HealthManagement at the University of Massachusetts Amherst (Spring 2025).
+This project is currently in development by Team20_HealthManagement at the University of Massachusetts Amherst (Spring 2025). The current implementation represents the Midpoint Milestone of our development process.
+
 
 ## Team Members
 - Siyuan (Max) Meng (@siyuanmengmax)
@@ -55,3 +107,12 @@ This project is currently in development by Team20_HealthManagement at the Unive
 
 ## Project Resources
 - [Project Documentation](https://drive.google.com/drive/folders/1CKSTxzOG-uz_qVGkbOr2_3o1p5T_zjmL?usp=sharing)
+
+- [GitHub Repository](https://github.com/siyuanmengmax/healthcare)
+
+## License
+This project is for educational purposes as part of the CS 520 course at UMass Amherst.
+
+## Acknowledgements
+- Professor and TAs of COMPSCI 520 at UMass Amherst
+- Django documentation and community
