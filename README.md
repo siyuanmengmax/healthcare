@@ -82,9 +82,9 @@ We have successfully implemented the following features:
 
 4. Configure your Anthropic API key
    - Open `healthcare_management/settings.py`
-   - Replace the placeholder API key with your own:
+   - Set the `ANTHROPIC_API_KEY` environment variable:
      ```python
-     ANTHROPIC_API_KEY = 'your-api-key-here'
+     ANTHROPIC_API_KEY = os.environ.get('ANTHROPIC_API_KEY')
      ```
 
 5. Apply migrations
