@@ -22,7 +22,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-+6v1w6d*u*qhbycoijmv5!_p(a1*b(39a2y)3ga++kkbldhcz*'
 # SECURITY WARNING: don't run with debug turned on in production!
-ANTHROPIC_API_KEY = 'your_anthropic_api_key_here'
+ANTHROPIC_API_KEY = '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'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
