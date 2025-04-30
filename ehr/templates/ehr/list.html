@@ -2,6 +2,33 @@
 {% block content %}
 <div class="ehr-list-container">
     <h2>My Medical Records</h2>
+
+    <div class="filters">
+        <form method="get" class="filter-form">
+            <div class="filter-group">
+                <label for="record_type">Record Type:</label>
+                <select name="record_type" id="record_type">
+                    <option value="">All Types</option>
+                    {% for value, label in record_types %}
+                        <option value="{{ value }}" {% if selected_type == value %}selected{% endif %}>{{ label }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label for="tag">Tag:</label>
+                <select name="tag" id="tag">
+                    <option value="">All Tags</option>
+                    {% for tag in all_tags %}
+                        <option value="{{ tag.id }}" {% if selected_tag == tag.id %}selected{% endif %}>{{ tag.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <button type="submit" class="btn">Filter</button>
+        </form>
+    </div>
+
     {% if records %}
         <table class="records-table" style="width: 100%; border-collapse: collapse;">
             <thead>
@@ -9,6 +36,7 @@
                     <th style="padding: 12px; text-align: left; border-bottom: 1px solid #ddd;">Type</th>
                     <th style="padding: 12px; text-align: left; border-bottom: 1px solid #ddd;">Description</th>
                     <th style="padding: 12px; text-align: left; border-bottom: 1px solid #ddd;">Creation Date</th>
+                    <th style="padding: 12px; text-align: left; border-bottom: 1px solid #ddd;">Status</th>
                     <th style="padding: 12px; text-align: left; border-bottom: 1px solid #ddd;">Actions</th>
                 </tr>
             </thead>
@@ -16,10 +44,17 @@
                 {% for record in records %}
                 <tr>
                     <td style="padding: 12px; text-align: left; border-bottom: 1px solid #ddd;">{{ record.get_record_type_display }}</td>
-                    <td style="padding: 12px; text-align: left; border-bottom: 1px solid #ddd;">{{ record.description }}</td>
-                    <td style="padding: 12px; text-align: left; border-bottom: 1px solid #ddd;">{{ record.creation_date|date:"Y-m-d" }}</td>
                     <td style="padding: 12px; text-align: left; border-bottom: 1px solid #ddd;">
-                        <a href="{{ record.attachments.url }}" target="_blank">View File</a>
+                        {{ record.description }}
+                        {% if record.is_confidential %}
+                            <span class="confidential-tag">Confidential</span>
+                        {% endif %}
+                    </td>
+                    <td style="padding: 12px; text-align: left; border-bottom: 1px solid #ddd;">{{ record.creation_date|date:"Y-m-d" }}</td>
+                    <td style="padding: 12px; text-align: left; border-bottom: 1px solid #ddd;">{{ record.status }}</td>
+                    <td style="padding: 12px; text-align: left; border-bottom: 1px solid #ddd;">
+                        <a href="{% url 'ehr_detail' record.id %}" class="btn btn-sm">View</a>
+                        <a href="{{ record.attachments.url }}" target="_blank" class="btn btn-sm">Download</a>
                     </td>
                 </tr>
                 {% endfor %}

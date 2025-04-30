@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
-<div class="login-form">
-    <h2>Login</h2>
+<div class="signup-form">
+    <h2>Doctor Registration</h2>
     <form method="post">
         {% csrf_token %}
         {% for field in form %}
@@ -13,8 +13,8 @@
                 {% endif %}
             </div>
         {% endfor %}
-        <button type="submit">Login</button>
+        <button type="submit">Register</button>
     </form>
-    <p>Don't have an account? <a href="{% url 'signup' %}">Register as Patient</a> or <a href="{% url 'doctor_signup' %}">Register as Doctor</a></p>
+    <p>Already have an account? <a href="{% url 'login' %}">Login</a></p>
 </div>
 {% endblock %}

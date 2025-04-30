@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="profile-container">
+    <h2>Doctor Profile</h2>
+    <div class="profile-details">
+        <p><strong>Name:</strong> {{ doctor.name }}</p>
+        <p><strong>Specialization:</strong> {{ doctor.specialization }}</p>
+        <p><strong>License Number:</strong> {{ doctor.license_number }}</p>
+        {% if doctor.contact_number %}
+            <p><strong>Contact Number:</strong> {{ doctor.contact_number }}</p>
+        {% endif %}
+        {% if doctor.bio %}
+            <p><strong>Professional Bio:</strong> {{ doctor.bio }}</p>
+        {% endif %}
+        {% if doctor.office_address %}
+            <p><strong>Office Address:</strong> {{ doctor.office_address }}</p>
+        {% endif %}
+        {% if doctor.office_hours %}
+            <p><strong>Office Hours:</strong> {{ doctor.office_hours }}</p>
+        {% endif %}
+    </div>
+    <a href="{% url 'doctor_profile_update' %}" class="btn">Edit Profile</a>
+    <a href="{% url 'patient_list' %}" class="btn">View Patients</a>
+</div>
+{% endblock %}
