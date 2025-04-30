@@ -101,6 +101,7 @@ We have successfully implemented the following core features:
 ## Project Status
 This project is currently in development by Team20_HealthManagement at the University of Massachusetts Amherst (Spring 2025). The current implementation represents the Midpoint Milestone of our development process.
 
+
 ## Team Members
 - Siyuan (Max) Meng (@siyuanmengmax)
 - Yanan (Amy) Zhang (@moonmoonmoonmoon)
@@ -109,6 +110,7 @@ This project is currently in development by Team20_HealthManagement at the Unive
 
 ## Project Resources
 - [Project Documentation](https://drive.google.com/drive/folders/1CKSTxzOG-uz_qVGkbOr2_3o1p5T_zjmL?usp=sharing)
+
 - [GitHub Repository](https://github.com/siyuanmengmax/healthcare)
 
 ## License
