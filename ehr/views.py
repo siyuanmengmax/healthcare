@@ -15,10 +15,8 @@ class EHRDetailView(LoginRequiredMixin, DetailView):
     context_object_name = 'record'
 
     def get_queryset(self):
-        # 患者只能看到自己的记录
         if self.request.user.role == 'PATIENT':
             return MedicalRecord.objects.filter(patient=self.request.user.patient)
-        # 医生可以看到所有记录
         return MedicalRecord.objects.all()
 
 @login_required
@@ -37,7 +35,6 @@ def upload_ehr(request):
 
 @login_required
 def update_ehr(request, pk):
-    # 获取记录，确保访问权限
     if request.user.role == 'PATIENT':
         record = get_object_or_404(MedicalRecord, pk=pk, patient=request.user.patient)
     else:
@@ -49,7 +46,7 @@ def update_ehr(request, pk):
             updated_record = form.save(commit=False)
             updated_record.updated_by = request.user
             updated_record.save()
-            form.save_m2m()  # 保存标签关系
+            form.save_m2m()
             return redirect('ehr_detail', pk=record.pk)
     else:
         form = MedicalRecordForm(instance=record)
@@ -59,7 +56,6 @@ def update_ehr(request, pk):
 
 @login_required
 def delete_ehr(request, pk):
-    # 获取记录，确保访问权限
     if request.user.role == 'PATIENT':
         record = get_object_or_404(MedicalRecord, pk=pk, patient=request.user.patient)
     else:
@@ -90,16 +86,16 @@ class PatientEHRListView(LoginRequiredMixin, ListView):
     def get_queryset(self):
         queryset = MedicalRecord.objects.all()
 
-        # 患者只能看到自己的记录
+
         if self.request.user.role == 'PATIENT':
             queryset = queryset.filter(patient=self.request.user.patient)
 
-        # 根据记录类型筛选
+
         record_type = self.request.GET.get('record_type')
         if record_type:
             queryset = queryset.filter(record_type=record_type)
 
-        # 根据标签筛选
+
         tag_id = self.request.GET.get('tag')
         if tag_id:
             queryset = queryset.filter(tags__id=tag_id)
@@ -121,7 +117,7 @@ class DoctorPatientEHRListView(LoginRequiredMixin, ListView):
     context_object_name = 'records'
 
     def dispatch(self, request, *args, **kwargs):
-        # 确保只有医生可以访问此视图
+
         if request.user.role != 'DOCTOR':
             return redirect('home')
         return super().dispatch(request, *args, **kwargs)
@@ -132,12 +128,10 @@ class DoctorPatientEHRListView(LoginRequiredMixin, ListView):
 
         queryset = MedicalRecord.objects.filter(patient=patient)
 
-        # 根据记录类型筛选
         record_type = self.request.GET.get('record_type')
         if record_type:
             queryset = queryset.filter(record_type=record_type)
 
-        # 根据标签筛选
         tag_id = self.request.GET.get('tag')
         if tag_id:
             queryset = queryset.filter(tags__id=tag_id)
@@ -156,17 +150,14 @@ class DoctorPatientEHRListView(LoginRequiredMixin, ListView):
 
 @login_required
 def analyze_medical_record(request, pk):
-    # 获取记录，确保访问权限
     if request.user.role == 'PATIENT':
         record = get_object_or_404(MedicalRecord, pk=pk, patient=request.user.patient)
     else:
         record = get_object_or_404(MedicalRecord, pk=pk)
 
-    # 使用Claude API分析文档
     analyzer = ClaudeMedicalAnalyzer()
     analysis_result = analyzer.analyze_medical_document(record)
 
-    # 保存分析结果
     analysis = analyzer.save_analysis_result(record, analysis_result)
 
     if analysis:
@@ -179,13 +170,13 @@ def analyze_medical_record(request, pk):
 
 @login_required
 def view_analysis(request, pk):
-    # 获取记录，确保访问权限
+
     if request.user.role == 'PATIENT':
         record = get_object_or_404(MedicalRecord, pk=pk, patient=request.user.patient)
     else:
         record = get_object_or_404(MedicalRecord, pk=pk)
 
-    # 获取分析结果
+
     try:
         analysis = record.analysis
     except MedicalRecordAnalysis.DoesNotExist:

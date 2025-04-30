@@ -53,6 +53,7 @@ class MedicalRecordAnalysis(models.Model):
     diagnosis = models.JSONField(null=True, blank=True)
     medications = models.JSONField(null=True, blank=True)
     treatments = models.JSONField(null=True, blank=True)
+    test_results = models.JSONField(null=True, blank=True)
     abnormal_values = models.JSONField(null=True, blank=True)
     analysis_date = models.DateTimeField(auto_now_add=True)
 
