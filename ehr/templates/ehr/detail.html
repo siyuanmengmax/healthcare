@@ -37,10 +37,11 @@
         <h3>Attachment</h3>
         <a href="{{ record.attachments.url }}" target="_blank" class="attachment-link">View File</a>
     </div>
-    
+
     <div class="record-actions">
         <a href="{% url 'ehr_update' record.id %}" class="btn">Edit</a>
         <a href="{% url 'ehr_delete' record.id %}" class="btn btn-danger">Delete</a>
+        <a href="{% url 'analyze_medical_record' record.id %}" class="btn btn-primary">Analyze with AI</a>
         <a href="{% url 'ehr_list' %}" class="btn btn-secondary">Back to List</a>
     </div>
 </div>

@@ -45,3 +45,16 @@ class MedicalRecord(models.Model):
 
     class Meta:
         ordering = ['-creation_date']
+
+
+class MedicalRecordAnalysis(models.Model):
+    medical_record = models.OneToOneField(MedicalRecord, on_delete=models.CASCADE, related_name='analysis')
+    analysis_text = models.TextField()
+    diagnosis = models.JSONField(null=True, blank=True)
+    medications = models.JSONField(null=True, blank=True)
+    treatments = models.JSONField(null=True, blank=True)
+    abnormal_values = models.JSONField(null=True, blank=True)
+    analysis_date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Analysis for {self.medical_record}"

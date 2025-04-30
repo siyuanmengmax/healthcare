@@ -4,3 +4,157 @@ body {
     margin: 0;
     padding: 0;
 }
+
+.conversation-list {
+    list-style: none;
+    padding: 0;
+}
+
+.conversation-item {
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.conversation-item a {
+    font-weight: bold;
+    color: #2c3e50;
+    text-decoration: none;
+}
+
+.conversation-item a:hover {
+    text-decoration: underline;
+}
+
+.last-updated {
+    font-size: 0.8em;
+    color: #777;
+}
+
+.messages-container {
+    max-height: 500px;
+    overflow-y: auto;
+    margin-bottom: 20px;
+    padding: 15px;
+    border: 1px solid #eee;
+    border-radius: 5px;
+}
+
+.message {
+    margin-bottom: 15px;
+    padding: 10px;
+    border-radius: 10px;
+    max-width: 80%;
+}
+
+.message.sent {
+    background-color: #e3f2fd;
+    margin-left: auto;
+}
+
+.message.received {
+    background-color: #f1f1f1;
+    margin-right: auto;
+}
+
+.message-content {
+    margin-bottom: 5px;
+}
+
+.message-meta {
+    font-size: 0.7em;
+    text-align: right;
+    color: #777;
+}
+
+.read-status {
+    margin-left: 5px;
+    color: #4caf50;
+}
+
+.unread-badge {
+    background-color: #f44336;
+    color: white;
+    border-radius: 50%;
+    padding: 2px 6px;
+    font-size: 0.7em;
+    margin-left: 5px;
+}
+
+.doctor-list {
+    list-style: none;
+    padding: 0;
+}
+
+.doctor-item {
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.doctor-info {
+    flex: 1;
+}
+
+.doctor-info h3 {
+    margin-top: 0;
+}
+
+.analysis-container {
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+}
+
+.record-info {
+    margin-bottom: 20px;
+    padding: 15px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.analysis-results {
+    padding: 15px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.analysis-section {
+    margin-bottom: 20px;
+}
+
+.analysis-section h4 {
+    margin-bottom: 10px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #eee;
+    color: #2c3e50;
+}
+
+.analysis-date {
+    font-size: 0.8em;
+    color: #777;
+    text-align: right;
+    margin-top: 20px;
+}
+
+.action-buttons {
+    margin-top: 20px;
+}
+
+.btn-primary {
+    background-color: #4CAF50;
+}
+
+.btn-danger {
+    background-color: #f44336;
+}
+
+.btn-secondary {
+    background-color: #607D8B;
+}

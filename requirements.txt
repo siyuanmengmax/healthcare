@@ -1,1 +1,2 @@
 Django==5.1.7
+anthropic==0.50.0

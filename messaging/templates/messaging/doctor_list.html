@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="doctor-list-container">
+    <h2>Available Doctors</h2>
+
+    {% if doctors %}
+        <ul class="doctor-list">
+            {% for doctor in doctors %}
+                <li class="doctor-item">
+                    <div class="doctor-info">
+                        <h3>Dr. {{ doctor.name }}</h3>
+                        <p><strong>Specialization:</strong> {{ doctor.specialization }}</p>
+                        {% if doctor.bio %}
+                            <p>{{ doctor.bio|truncatewords:30 }}</p>
+                        {% endif %}
+                    </div>
+                    <div class="doctor-actions">
+                        <a href="{% url 'start_conversation' doctor.user.id %}" class="btn">Message</a>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No doctors available at the moment.</p>
+    {% endif %}
+
+    <a href="{% url 'conversation_list' %}" class="btn">Back to My Conversations</a>
+</div>
+{% endblock %}
