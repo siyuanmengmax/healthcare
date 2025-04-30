@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="patient-list-container">
+    <h2>My Patients</h2>
+    
+    {% if patients %}
+        <table class="patients-table" style="width: 100%; border-collapse: collapse;">
+            <thead>
+                <tr style="background-color: #f2f2f2;">
+                    <th style="padding: 12px; text-align: left; border-bottom: 1px solid #ddd;">Name</th>
+                    <th style="padding: 12px; text-align: left; border-bottom: 1px solid #ddd;">Date of Birth</th>
+                    <th style="padding: 12px; text-align: left; border-bottom: 1px solid #ddd;">Contact</th>
+                    <th style="padding: 12px; text-align: left; border-bottom: 1px solid #ddd;">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for patient in patients %}
+                <tr>
+                    <td style="padding: 12px; text-align: left; border-bottom: 1px solid #ddd;">{{ patient.name }}</td>
+                    <td style="padding: 12px; text-align: left; border-bottom: 1px solid #ddd;">
+                        {% if patient.date_of_birth %}{{ patient.date_of_birth }}{% else %}Not provided{% endif %}
+                    </td>
+                    <td style="padding: 12px; text-align: left; border-bottom: 1px solid #ddd;">
+                        {% if patient.phone %}{{ patient.phone }}{% else %}Not provided{% endif %}
+                    </td>
+                    <td style="padding: 12px; text-align: left; border-bottom: 1px solid #ddd;">
+                        <a href="{% url 'patient_detail' patient.id %}" class="btn btn-sm">View Profile</a>
+                        <a href="{% url 'patient_records' patient.id %}" class="btn btn-sm">View Records</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>You don't have any patients yet.</p>
+    {% endif %}
+</div>
+{% endblock %}

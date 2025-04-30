@@ -117,14 +117,19 @@
             <div class="logo">Healthcare Management System</div>
             <ul>
                 {% if user.is_authenticated %}
+                {% if user.role == 'PATIENT' %}
                     <li><a href="{% url 'patient_profile' %}">Personal Profile</a></li>
                     <li><a href="{% url 'ehr_list' %}">Medical Records</a></li>
-                    <li>
-                        <form method="post" action="{% url 'logout' %}" style="display: inline;">
-                            {% csrf_token %}
-                            <button type="submit" style="background: none; border: none; color: white; cursor: pointer; padding: 0; font: inherit;">Log Out</button>
-                        </form>
-                    </li>
+                {% elif user.role == 'DOCTOR' %}
+                    <li><a href="{% url 'doctor_profile' %}">Doctor Profile</a></li>
+                    <li><a href="{% url 'patient_list' %}">My Patients</a></li>
+                {% endif %}
+                <li>
+                    <form method="post" action="{% url 'logout' %}" style="display: inline;">
+                        {% csrf_token %}
+                        <button type="submit">Log Out</button>
+                    </form>
+                </li>
                 {% else %}
                     <li><a href="{% url 'login' %}">Login</a></li>
                     <li><a href="{% url 'signup' %}">Register</a></li>

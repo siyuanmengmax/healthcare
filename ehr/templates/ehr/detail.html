@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="ehr-detail-container">
+    <h2>Medical Record Details</h2>
+    
+    <div class="record-meta">
+        <p><strong>Record Type:</strong> {{ record.get_record_type_display }}</p>
+        <p><strong>Created:</strong> {{ record.creation_date|date:"F j, Y" }}</p>
+        <p><strong>Status:</strong> {{ record.status }}</p>
+        {% if record.is_confidential %}
+            <p class="confidential-badge">Confidential</p>
+        {% endif %}
+    </div>
+    
+    <div class="record-content">
+        <h3>Description</h3>
+        <p>{{ record.description }}</p>
+        
+        {% if record.content %}
+            <h3>Content</h3>
+            <div class="content-box">
+                {{ record.content|linebreaks }}
+            </div>
+        {% endif %}
+        
+        {% if record.tags.all %}
+            <div class="tags">
+                <h3>Tags</h3>
+                <ul class="tag-list">
+                    {% for tag in record.tags.all %}
+                        <li class="tag">{{ tag.name }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+        
+        <h3>Attachment</h3>
+        <a href="{{ record.attachments.url }}" target="_blank" class="attachment-link">View File</a>
+    </div>
+    
+    <div class="record-actions">
+        <a href="{% url 'ehr_update' record.id %}" class="btn">Edit</a>
+        <a href="{% url 'ehr_delete' record.id %}" class="btn btn-danger">Delete</a>
+        <a href="{% url 'ehr_list' %}" class="btn btn-secondary">Back to List</a>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="ehr-update-form">
+    <h2>Update Medical Record</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {% for field in form %}
+            <div class="form-group">
+                {{ field.label_tag }}
+                {{ field }}
+                {% if field.errors %}
+                    <div class="error">{{ field.errors }}</div>
+                {% endif %}
+                {% if field.help_text %}
+                    <div class="help-text">{{ field.help_text }}</div>
+                {% endif %}
+            </div>
+        {% endfor %}
+        
+        <div class="form-group">
+            <label>Add New Tag</label>
+            <div class="tag-input-container">
+                <input type="text" id="new-tag" class="tag-input">
+                <button type="button" id="add-tag-btn">Add</button>
+            </div>
+        </div>
+        
+        <button type="submit">Save Changes</button>
+    </form>
+    <a href="{% url 'ehr_detail' record.id %}">Cancel</a>
+</div>
+
+<script>
+    document.getElementById('add-tag-btn').addEventListener('click', function() {
+        const tagInput = document.getElementById('new-tag');
+        const tagName = tagInput.value.trim();
+        
+        if (tagName) {
+            fetch("{% url 'add_tag' %}", {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}',
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `tag_name=${encodeURIComponent(tagName)}`
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Add new checkbox for the tag
+                    const tagsContainer = document.querySelector('#id_tags').closest('.form-group');
+                    const checkbox = document.createElement('input');
+                    checkbox.type = 'checkbox';
+                    checkbox.name = 'tags';
+                    checkbox.value = data.id;
+                    checkbox.id = `id_tags_${data.id}`;
+                    checkbox.checked = true;
+                    
+                    const label = document.createElement('label');
+                    label.htmlFor = `id_tags_${data.id}`;
+                    label.textContent = data.name;
+                    
+                    const div = document.createElement('div');
+                    div.appendChild(checkbox);
+                    div.appendChild(label);
+                    
+                    tagsContainer.appendChild(div);
+                    tagInput.value = '';
+                }
+            });
+        }
+    });
+</script>
+{% endblock %}

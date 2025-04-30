@@ -72,8 +72,11 @@ We have successfully implemented the following core features:
 
 4. Apply migrations
    ```bash
+   # Generate migration files based on model changes
+   python manage.py makemigrations
+   
+   # Apply migrations to the database
    python manage.py migrate
-   ```
 
 5. Create a superuser (admin)
    ```bash

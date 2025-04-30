@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="delete-confirmation">
+    <h2>Delete Medical Record</h2>
+    <p>Are you sure you want to delete the following medical record?</p>
+    
+    <div class="record-info">
+        <p><strong>Type:</strong> {{ record.get_record_type_display }}</p>
+        <p><strong>Description:</strong> {{ record.description }}</p>
+        <p><strong>Created:</strong> {{ record.creation_date|date:"F j, Y" }}</p>
+    </div>
+    
+    <div class="warning">
+        <p><strong>Warning:</strong> This action cannot be undone. All data associated with this record will be permanently deleted.</p>
+    </div>
+    
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Confirm Delete</button>
+        <a href="{% url 'ehr_detail' record.id %}" class="btn">Cancel</a>
+    </form>
+</div>
+{% endblock %}
