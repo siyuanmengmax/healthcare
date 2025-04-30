@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="conversation-container">
+    <div class="conversation-header">
+        <h2>
+            {% if user.role == 'PATIENT' %}
+                Conversation with Dr. {{ conversation.doctor.name }}
+            {% else %}
+                Conversation with {{ conversation.patient.name }}
+            {% endif %}
+        </h2>
+        <a href="{% url 'conversation_list' %}" class="btn btn-sm">Back to Conversations</a>
+    </div>
+
+    <div class="messages-container">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="message {% if message.sender == user %}sent{% else %}received{% endif %}">
+                    <div class="message-content">
+                        {{ message.content|linebreaks }}
+                        {% if message.attachment %}
+                            <div class="attachment">
+                                <a href="{{ message.attachment.url }}" target="_blank">View Attachment</a>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="message-meta">
+                        {{ message.sent_at|date:"M d, Y H:i" }}
+                        {% if message.is_read and message.sender == user %}
+                            <span class="read-status">Read</span>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p class="no-messages">No messages yet. Start the conversation below.</p>
+        {% endif %}
+    </div>
+
+    <div class="message-form">
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group">
+                {{ form.content }}
+            </div>
+            <div class="form-group">
+                <label for="{{ form.attachment.id_for_label }}">Add Attachment:</label>
+                {{ form.attachment }}
+            </div>
+            <button type="submit" class="btn">Send</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

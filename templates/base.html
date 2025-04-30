@@ -117,19 +117,25 @@
             <div class="logo">Healthcare Management System</div>
             <ul>
                 {% if user.is_authenticated %}
-                {% if user.role == 'PATIENT' %}
-                    <li><a href="{% url 'patient_profile' %}">Personal Profile</a></li>
-                    <li><a href="{% url 'ehr_list' %}">Medical Records</a></li>
-                {% elif user.role == 'DOCTOR' %}
-                    <li><a href="{% url 'doctor_profile' %}">Doctor Profile</a></li>
-                    <li><a href="{% url 'patient_list' %}">My Patients</a></li>
-                {% endif %}
-                <li>
-                    <form method="post" action="{% url 'logout' %}" style="display: inline;">
-                        {% csrf_token %}
-                        <button type="submit">Log Out</button>
-                    </form>
-                </li>
+                    {% if user.role == 'PATIENT' %}
+                        <li><a href="{% url 'patient_profile' %}">Personal Profile</a></li>
+                        <li><a href="{% url 'ehr_list' %}">Medical Records</a></li>
+                        <li><a href="{% url 'conversation_list' %}">Messages</a>
+                            <span id="unread-count" class="unread-badge" style="display: none;"></span>
+                        </li>
+                    {% elif user.role == 'DOCTOR' %}
+                        <li><a href="{% url 'doctor_profile' %}">Doctor Profile</a></li>
+                        <li><a href="{% url 'patient_list' %}">My Patients</a></li>
+                        <li><a href="{% url 'conversation_list' %}">Messages</a>
+                            <span id="unread-count" class="unread-badge" style="display: none;"></span>
+                        </li>
+                    {% endif %}
+                    <li>
+                        <form method="post" action="{% url 'logout' %}" style="display: inline;">
+                            {% csrf_token %}
+                            <button type="submit">Log Out</button>
+                        </form>
+                    </li>
                 {% else %}
                     <li><a href="{% url 'login' %}">Login</a></li>
                     <li><a href="{% url 'signup' %}">Register</a></li>
@@ -152,5 +158,26 @@
     <footer>
         <p>&copy; 2025 Healthcare Management System</p>
     </footer>
+
+{% if user.is_authenticated %}
+<script>
+    function updateUnreadCount() {
+        fetch("{% url 'unread_message_count' %}")
+            .then(response => response.json())
+            .then(data => {
+                const badge = document.getElementById('unread-count');
+                if (data.count > 0) {
+                    badge.textContent = data.count;
+                    badge.style.display = 'inline';
+                } else {
+                    badge.style.display = 'none';
+                }
+            });
+    }
+
+    updateUnreadCount();
+    setInterval(updateUnreadCount, 60000);
+</script>
+{% endif %}
 </body>
 </html>

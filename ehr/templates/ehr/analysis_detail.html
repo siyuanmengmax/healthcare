@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="analysis-container">
+    <!-- Success message -->
+    <div class="alert alert-success">
+        Medical record analyzed successfully.
+    </div>
+
+    <h2>AI Analysis for Medical Record</h2>
+
+    <div class="record-info">
+        <h3>Record Information</h3>
+        <p><strong>Type:</strong> {{ record.get_record_type_display }}</p>
+        <p><strong>Description:</strong> {{ record.description }}</p>
+        <p><strong>Created:</strong> {{ record.creation_date|date:"F j, Y" }}</p>
+        <a href="{% url 'ehr_detail' record.id %}" class="btn btn-sm">View Original Record</a>
+    </div>
+
+    <div class="analysis-results">
+        <h3>Analysis Results</h3>
+
+        {% if analysis.diagnosis %}
+            <div class="analysis-section">
+                <h4>Diagnosis</h4>
+                <ul>
+                    {% for item in analysis.diagnosis %}
+                        <li>{{ item }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+
+        {% if analysis.medications %}
+            <div class="analysis-section">
+                <h4>Medications</h4>
+                <ul>
+                    {% for med in analysis.medications %}
+                        <li>
+                            <strong>{{ med.name }}</strong>
+                            {% if med.dosage %} - Dosage: {{ med.dosage }}{% endif %}
+                            {% if med.frequency %} - Frequency: {{ med.frequency }}{% endif %}
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+
+        {% if analysis.treatments %}
+            <div class="analysis-section">
+                <h4>Treatments</h4>
+                <ul>
+                    {% for treatment in analysis.treatments %}
+                        <li>{{ treatment }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+
+        {% if analysis.test_results %}
+            <div class="analysis-section">
+                <h4>Test Results</h4>
+                <ul>
+                    {% for test in analysis.test_results %}
+                        <li>
+                            <strong>{{ test.test }}</strong>: {{ test.result }}
+                            {% if test.normal_range %} (Normal range: {{ test.normal_range }}){% endif %}
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+        
+        {% if analysis.abnormal_values %}
+            <div class="analysis-section">
+                <h4>Abnormal Values to Monitor</h4>
+                <ul>
+                    {% for item in analysis.abnormal_values %}
+                        <li>{{ item }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+        
+        <div class="analysis-date">
+            <p>Analysis performed on {{ analysis.analysis_date|date:"F j, Y H:i" }}</p>
+        </div>
+    </div>
+    
+    <div class="action-buttons">
+        <a href="{% url 'analyze_medical_record' record.id %}" class="btn">Refresh Analysis</a>
+        <a href="{% url 'ehr_list' %}" class="btn btn-secondary">Back to Records</a>
+    </div>
+</div>
+{% endblock %}

@@ -3,7 +3,9 @@ from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView, DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import JsonResponse
-from .models import MedicalRecord, MedicalRecordTag
+from django.contrib import messages
+from .models import MedicalRecord, MedicalRecordTag, MedicalRecordAnalysis
+from .services import ClaudeMedicalAnalyzer
 from .forms import MedicalRecordForm
 from users.models import Patient
 
@@ -150,3 +152,46 @@ class DoctorPatientEHRListView(LoginRequiredMixin, ListView):
         context['selected_tag'] = self.request.GET.get('tag', '')
         context['patient'] = get_object_or_404(Patient, pk=self.kwargs.get('patient_id'))
         return context
+
+
+@login_required
+def analyze_medical_record(request, pk):
+    # 获取记录，确保访问权限
+    if request.user.role == 'PATIENT':
+        record = get_object_or_404(MedicalRecord, pk=pk, patient=request.user.patient)
+    else:
+        record = get_object_or_404(MedicalRecord, pk=pk)
+
+    # 使用Claude API分析文档
+    analyzer = ClaudeMedicalAnalyzer()
+    analysis_result = analyzer.analyze_medical_document(record)
+
+    # 保存分析结果
+    analysis = analyzer.save_analysis_result(record, analysis_result)
+
+    if analysis:
+        messages.success(request, "Medical record analyzed successfully.")
+    else:
+        messages.error(request, "Error analyzing medical record.")
+
+    return redirect('ehr_analysis_detail', pk=record.pk)
+
+
+@login_required
+def view_analysis(request, pk):
+    # 获取记录，确保访问权限
+    if request.user.role == 'PATIENT':
+        record = get_object_or_404(MedicalRecord, pk=pk, patient=request.user.patient)
+    else:
+        record = get_object_or_404(MedicalRecord, pk=pk)
+
+    # 获取分析结果
+    try:
+        analysis = record.analysis
+    except MedicalRecordAnalysis.DoesNotExist:
+        return redirect('analyze_medical_record', pk=record.pk)
+
+    return render(request, 'ehr/analysis_detail.html', {
+        'record': record,
+        'analysis': analysis
+    })

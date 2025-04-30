@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="conversation-list-container">
+    <h2>My Conversations</h2>
+
+    {% if conversations %}
+        <ul class="conversation-list">
+            {% for conversation in conversations %}
+                <li class="conversation-item">
+                    {% if user.role == 'PATIENT' %}
+                        <a href="{% url 'conversation_detail' conversation.id %}">
+                            Dr. {{ conversation.doctor.name }}
+                        </a>
+                    {% else %}
+                        <a href="{% url 'conversation_detail' conversation.id %}">
+                            {{ conversation.patient.name }}
+                        </a>
+                    {% endif %}
+                    <span class="last-updated">Last message: {{ conversation.updated_at|date:"M d, Y H:i" }}</span>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>You don't have any conversations yet.</p>
+
+        {% if user.role == 'PATIENT' %}
+            <p>Start a conversation with a doctor:</p>
+            <a href="{% url 'doctor_list' %}" class="btn">View Doctors</a>
+        {% endif %}
+    {% endif %}
+</div>
+{% endblock %}
