@@ -45,10 +45,10 @@ class MessagingViewsTestCase(TestCase):
 
 
 
-def test_start_conversation_invalid(self):
-        self.client.login(username='patient', password='pass')
-        response = self.client.get(reverse('start_conversation', args=[self.other_user.id]))
-        self.assertRedirects(response, reverse('conversation_list'))
+    def test_start_conversation_invalid(self):
+            self.client.login(username='patient', password='pass')
+            response = self.client.get(reverse('start_conversation', args=[self.other_user.id]))
+            self.assertRedirects(response, reverse('conversation_list'))
 
     def test_conversation_detail_access(self):
         self.client.login(username='patient', password='pass')
