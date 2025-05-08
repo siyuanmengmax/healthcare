@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block title %}Login History{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4">Your Login History</h2>
+    
+    <div class="card shadow-sm">
+        <div class="card-body">
+            {% if login_history %}
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Date and Time</th>
+                                <th>IP Address</th>
+                                <th>Device/Browser</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for entry in login_history %}
+                                <tr>
+                                    <td>{{ entry.login_time }}</td>
+                                    <td>{{ entry.ip_address }}</td>
+                                    <td>{{ entry.user_agent|truncatechars:50 }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <p class="text-muted">No login history available.</p>
+            {% endif %}
+        </div>
+    </div>
+    
+    <div class="mt-3">
+        <a href="{% url 'patient_profile' %}" class="btn btn-secondary">Back to Profile</a>
+    </div>
+</div>
+{% endblock %}

@@ -5,7 +5,7 @@ from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import DetailView, UpdateView, ListView
 from .forms import PatientSignUpForm, PatientProfileUpdateForm, DoctorSignUpForm
-from .models import Patient, Doctor
+from .models import Patient, Doctor, LoginHistory
 
 
 class HomeView(View):
@@ -14,6 +14,23 @@ class HomeView(View):
 
 class UserLoginView(LoginView):
     template_name = 'users/login.html'
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        # 记录登录历史
+        LoginHistory.objects.create(
+            user=self.request.user,
+            ip_address=self.get_client_ip(),
+            user_agent=self.request.META.get('HTTP_USER_AGENT', '')
+        )
+        return response
+        
+    def get_client_ip(self):
+        x_forwarded_for = self.request.META.get('HTTP_X_FORWARDED_FOR')
+        if x_forwarded_for:
+            ip = x_forwarded_for.split(',')[0]
+        else:
+            ip = self.request.META.get('REMOTE_ADDR')
+        return ip
 
     def get_success_url(self):
         # 根据用户角色确定登录后的重定向页面
@@ -113,3 +130,11 @@ class PatientDetailView(LoginRequiredMixin, DetailView):
         if request.user.role != 'DOCTOR':
             return redirect('home')
         return super().dispatch(request, *args, **kwargs)
+
+class LoginHistoryView(LoginRequiredMixin, ListView):
+    model = LoginHistory
+    template_name = 'users/login_history.html'
+    context_object_name = 'login_history'
+    
+    def get_queryset(self):
+        return LoginHistory.objects.filter(user=self.request.user).order_by('-login_time')
