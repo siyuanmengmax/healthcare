@@ -1,6 +1,11 @@
 # Healthcare Management System
 
 ## Project Overview
+![License](https://img.shields.io/badge/license-MIT-blue.svg)
+
+![Healthcare Welcome](docs/images/welcome.png)
+*Welcome Page of the System*
+
 The Healthcare Management System is a comprehensive digital platform aimed at modernizing healthcare record-keeping by transitioning from paper-based methods to a secure digital platform. Our system leverages advanced AI and Large Language Models (LLMs) to intelligently process medical documents, extract meaningful insights, and provide clinical decision support.
 
 ### Primary Goals
